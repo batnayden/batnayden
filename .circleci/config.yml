@@ -1,0 +1,213 @@
+version: 2.1
+
+orbs:
+  # The python orb contains a set of prepackaged CircleCI configuration you can use repeatedly in your configuration files
+  # Orb commands and jobs help you with common scripting around a language/tool
+  # so you dont have to copy and paste it everywhere.
+  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
+  python: circleci/python@1.2
+
+workflows:
+  sample:  # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run. 
+    # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows 
+    jobs:
+      - build-and-test
+
+
+jobs:
+  build-and-test:  # This is the name of the job, feel free to change it to better match what you're trying to do!
+    # These next lines defines a Docker executors: https://circleci.com/docs/2.0/executor-types/
+    # You can specify an image from Dockerhub or use one of the convenience images from CircleCI's Developer Hub
+    # A list of available CircleCI Docker convenience images are available here: https://circleci.com/developer/images/image/cimg/python
+    # The executor is the environment in which the steps below will be executed - below will use a python 3.9 container
+    # Change the version below to your required version of python
+    docker:
+      - image: cimg/python:3.8
+    # Checkout the code as the first step. This is a dedicated CircleCI step.
+    # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
+    # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
+    # Then run your tests!
+    # CircleCI will report the results back to your VCS provider.
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+          # app-dir: ~/project/package-directory/  # If you're requirements.txt isn't in the root directory.
+          # pip-dependency-file: test-requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and test requirements.
+      - run:
+          name: Run tests
+          version: 2.1
+executors:
+  my-executor:
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+
+jobs:
+  my-job:
+    executor: my-executorversion: 2.1
+executors:
+  my-executor:
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+
+jobs:
+  my-job:
+    executor: my-executorjobs:
+  build:
+    docker:
+      - image: buildpack-deps:trusty
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    environment:
+      FOO: bar
+    parallelism: 3
+    resource_class: large
+    working_directory: ~/my-app
+    steps:
+      - run: go test -v $(go list ./... | circleci tests split)
+parameters
+          # This assumes pytest is installed via the install-package step above
+          command: pytest    
+          commands:
+  sayhello:
+    description: "A very simple command for demonstration purposes"
+    parameters:
+      to:
+        type: string
+        default: "Hello World"
+    steps:      
+          jobs:
+  build:
+    docker:
+      - image: buildpack-deps:trusty # primary container
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+        environment:
+          ENV: CI
+
+      - image: mongo:2.6.8
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+        command: [--smallfiles]
+
+      - image: postgres:9.4.1
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+        environment:
+          POSTGRES_USER: root
+
+      - image: redis@sha256:54057dd7e125ca41afe526a877e8bd35ec2cdd33b9217e022ed37bdcf7d09673
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+
+      - image: acme-private/private-image:321
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var referencejobs:
+  build:
+    docker:
+      - image: account-id.dkr.ecr.us-east-1.amazonaws.com/org/repo:0.1
+        aws_auth:
+          aws_access_key_id: AKIAQWERVA  # can specify string literal values
+          aws_secret_access_key: $ECR_AWS_SECRET_ACCESS_KEY  # or project UI envar reference
+          jobs:
+  myjob:
+    docker:
+      - image: circleci/node:14.17.3
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - sayhello:
+          to: "Lev"
+machine
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - checkout list
+      - run:
+          name: "Testing"
+          command: echo "Hi"
+Available machine images
+version: 2.1
+workflows:
+  main:
+    jobs:
+      - build
+jobs:
+  build:
+    machine:
+      image: windows-server-2019-nvidia:stable
+      docker_layer_caching: true    # default - false
+macos
+jobs:
+  build:
+    macos:
+      xcode: "11.3.0"
+windowsversion: 2.1
+
+orbs:
+  win: circleci/windows@2.3.0
+
+jobs:
+  build:
+    executor: win/default
+    steps:
+      - checkout
+      - run: echo 'Hello, Windows'
+branches – DEPRECATEDjobs:
+  build:
+    docker:
+      - image: buildpack-deps:trusty
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    resource_class: xlarge
+    steps:jobs:
+  build:
+    machine:
+      image: ubuntu-2004:202010-01 # recommended linux image
+    resource_class: large
+    steps:
+      ... // other configjobs:
+  job_name:
+    machine: true
+    resource_class: my-namespace/my-runner
+mjobs:
+  build:
+    macos:
+      xcode: "11.3.0"
+    resource_class: large
+    steps:
+      ... // other config
+Windows executororbs:
+  win: circleci/windows@2.3.0
+
+jobs:
+  build:
+    executor:
+      name: win/default
+      size: "medium" # can be "medium", "large", "xlarge", "2xlarge"
+    steps:
+      - run: Write-Host 'Hello, Windows'
+      run parallelism: 
+        if build: 
+          docker:     
+            - image: buildpack-deps:trusty    
+          steps:     
+            - run: echo "hello world"    
